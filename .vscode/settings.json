@@ -1,0 +1,10 @@
+{
+    "eslint.format.enable": true,
+    "editor.formatOnSave": true,
+    "editor.autoIndent": "none",
+    "eslint.lintTask.enable": true,
+    "prettier.tabWidth": 4,
+    "prettier.useTabs": false,
+    "workbench.tree.indent": 4,
+    "prettier.prettierPath": ".prettierrc"
+}
