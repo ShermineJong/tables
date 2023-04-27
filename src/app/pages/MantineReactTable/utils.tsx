@@ -188,8 +188,8 @@ export const mantineReactTableColumnDefs: MRT_ColumnDef<Employee>[] = [
         PlaceholderCell: ({ cell }) => (
             <LongTextRenderer value={cell.getValue() as string} />
         ),
-        size: 4,
-        minSize: 4,
+        size: 3,
+        minSize: 3,
         maxSize: 1200,
     },
 ];

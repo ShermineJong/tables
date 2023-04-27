@@ -112,6 +112,9 @@ export const MantineReactTablePage = () => {
                 setColumnOrder={setColumnOrder}
                 setFilter={setFilter}
             />
+            <Text size="xs" color="dimmed">
+                * First Name, Last Name, Email, Job Title and Phrase is editable
+            </Text>
             <Group
                 position="center"
                 sx={{
@@ -287,6 +290,8 @@ export const MantineReactTablePage = () => {
                         mantineEditTextInputProps={({ cell }) => ({
                             onBlur: event =>
                                 onChangeValue(cell, event.target.value),
+                            styles: { wrapper: { width: '100%' } },
+                            w: '100%',
                         })}
                         onSortingChange={setSorting}
                         onExpandedChange={setExpanded}

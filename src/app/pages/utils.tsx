@@ -15,9 +15,9 @@ export const useTableUtils = () => {
     const [sorting, setSorting] = useState<SortingState>();
     const [grouping, setGrouping] = useState<GroupingState>([]);
     const [expanded, setExpanded] = useState<Record<string, boolean>>({});
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-        {},
-    );
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+        startDate: false,
+    });
     const [filter, setFilter] = useState<Record<string, string>>({});
 
     const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([
