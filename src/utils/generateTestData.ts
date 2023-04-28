@@ -10,6 +10,9 @@ export interface ColumnDef {
     flex?: number;
     cellRenderer?: unknown;
     rowGroup?: boolean;
+    hide?: boolean;
+    editable?: boolean;
+    cellEditor?: unknown;
 }
 
 export const columnData: ColumnDef[] = [
@@ -17,21 +20,25 @@ export const columnData: ColumnDef[] = [
         accessor: 'firstName',
         label: 'First Name',
         flex: 1,
-        rowGroup: true,
         cellRenderer: BoldTextRenderer,
+        editable: true,
+        cellEditor: 'agTextCellEditor',
     },
     {
         accessor: 'lastName',
         label: 'Last Name',
         flex: 1,
         cellRenderer: BoldTextRenderer,
-        rowGroup: true,
+        editable: true,
+        cellEditor: 'agTextCellEditor',
     },
     {
         accessor: 'email',
         label: 'Email',
         flex: 2,
         cellRenderer: LongTextRenderer,
+        editable: true,
+        cellEditor: 'agTextCellEditor',
     },
     {
         accessor: 'count',
@@ -44,18 +51,23 @@ export const columnData: ColumnDef[] = [
         label: 'Job Title',
         flex: 2,
         cellRenderer: LongTextRenderer,
+        editable: true,
+        cellEditor: 'agTextCellEditor',
     },
     {
         accessor: 'startDate',
         label: 'Start Date',
         flex: 1,
         cellRenderer: DateRenderer,
+        hide: true,
     },
     {
         accessor: 'signatureCatchPhrase',
         label: 'Phrases',
-        flex: 4,
+        flex: 3,
         cellRenderer: LongTextRenderer,
+        editable: true,
+        cellEditor: 'agTextCellEditor',
     },
 ];
 

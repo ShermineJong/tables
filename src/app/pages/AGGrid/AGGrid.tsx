@@ -14,12 +14,13 @@ import { AgGridReact } from 'ag-grid-react';
 import { columnData } from 'utils/generateTestData';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import 'ag-grid-enterprise';
 import { IHeaderParams } from 'ag-grid-community';
 import { HeaderCell } from 'app/components/HeaderCell/HeaderCell';
 import { useTableUtils } from '../utils';
 import { Sort } from 'utils/utils';
 import { TopPanel } from 'app/components/TopPanel/TopPanel';
-import { IconCheck, IconQuestionMark, IconX } from '@tabler/icons-react';
+import { IconCheck, IconX } from '@tabler/icons-react';
 
 const columnDefs = columnData.map(column => ({
     ...column,
@@ -40,12 +41,15 @@ export const AGGrid = () => {
         setColumnVisibility,
         setFilter,
         setColumnOrder,
+        setData,
     } = useTableUtils();
     const getRowStyle = ({ data }) => {
-        const { arrived } = data;
-        return {
-            background: arrived ? theme.white : theme.colors.blue[0],
-        };
+        if (data) {
+            const { arrived } = data;
+            return {
+                background: arrived ? theme.white : theme.colors.blue[0],
+            };
+        }
     };
 
     const onClickSorting = useCallback(
@@ -94,7 +98,6 @@ export const AGGrid = () => {
                     : undefined;
                 return (
                     <Box
-                        component="th"
                         sx={{
                             cursor: 'pointer',
                         }}
@@ -122,6 +125,17 @@ export const AGGrid = () => {
                 : undefined,
         [grouping],
     );
+
+    const onChangeValue = (rowIndex: number, newValue: string) => {
+        setData(prevData => {
+            const data = [...prevData];
+            data[rowIndex] = {
+                ...data[rowIndex],
+                [rowIndex]: newValue,
+            };
+            return data;
+        });
+    };
 
     return (
         <Stack p="xl" w="100%" h="100%">
@@ -244,15 +258,16 @@ export const AGGrid = () => {
                             <List.Item
                                 icon={
                                     <ThemeIcon
-                                        color="blue"
+                                        color="red"
                                         size="sm"
                                         radius="xl"
                                     >
-                                        <IconQuestionMark size="0.9rem" />
+                                        <IconX size="0.9rem" />
                                     </ThemeIcon>
                                 }
                             >
-                                Paid Data grouping functionality
+                                Paid Data grouping functionality that does not
+                                support custom grouping
                             </List.Item>
                             <List.Item
                                 icon={
@@ -276,10 +291,17 @@ export const AGGrid = () => {
                         getRowStyle={getRowStyle}
                         columnDefs={columnDefs}
                         rowData={data}
-                        onRowClicked={props => onRowClicked(props.rowIndex)}
+                        onRowClicked={props =>
+                            props.data &&
+                            !props.data.arrived &&
+                            onRowClicked(props.rowIndex)
+                        }
                         suppressMovableColumns={true}
-                        groupDisplayType="custom"
+                        groupDisplayType="singleColumn"
                         components={components}
+                        onCellValueChanged={({ rowIndex, newValue }) => {
+                            onChangeValue(rowIndex, newValue);
+                        }}
                     />
                 </Box>
                 <Box sx={{ flex: '1 1' }} />
