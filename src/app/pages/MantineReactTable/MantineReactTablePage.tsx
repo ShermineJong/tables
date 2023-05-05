@@ -54,8 +54,8 @@ export const MantineReactTablePage = () => {
             setColumnOrder([
                 grouping[0],
                 ...columnData
-                    .filter(item => item.accessor !== grouping[0])
-                    .map(item => item.accessor),
+                    .filter(item => item.field !== grouping[0])
+                    .map(item => item.field),
             ]);
         }
     }, [grouping, setColumnOrder]);
@@ -63,7 +63,7 @@ export const MantineReactTablePage = () => {
     const selectedGroupingColumn = useMemo(
         () =>
             grouping.length > 0
-                ? columnData.filter(item => item.accessor === grouping[0])[0]
+                ? columnData.filter(item => item.field === grouping[0])[0]
                 : undefined,
         [grouping],
     );
@@ -104,8 +104,8 @@ export const MantineReactTablePage = () => {
                             )[0],
                     )
                     .map(defs => ({
-                        accessor: defs.accessorKey,
-                        label: defs.header,
+                        field: defs.accessorKey,
+                        headerName: defs.header,
                     }))}
                 columnVisibility={columnVisibility}
                 setColumnVisibility={setColumnVisibility}

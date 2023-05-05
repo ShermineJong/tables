@@ -91,9 +91,9 @@ export const TopPanel = (props: NumberRendererProps) => {
                                 >
                                     {columns.map((column, index) => (
                                         <Draggable
-                                            draggableId={column.accessor}
+                                            draggableId={column.field}
                                             index={index}
-                                            key={column.accessor}
+                                            key={column.field}
                                         >
                                             {(
                                                 providedDraggableForGroup,
@@ -112,15 +112,13 @@ export const TopPanel = (props: NumberRendererProps) => {
                                                         {...providedDraggableForGroup.draggableProps}
                                                     >
                                                         <Checkbox
-                                                            key={
-                                                                column.accessor
-                                                            }
+                                                            key={column.field}
                                                             checked={checkColumnVisibility(
-                                                                column.accessor,
+                                                                column.field,
                                                             )}
                                                             onChange={event =>
                                                                 onChangeColumnVisibility(
-                                                                    column.accessor,
+                                                                    column.field,
                                                                     event
                                                                         .currentTarget
                                                                         .checked,
@@ -138,7 +136,7 @@ export const TopPanel = (props: NumberRendererProps) => {
                                                                     </ActionIcon>
                                                                     <Text>
                                                                         {
-                                                                            column.label
+                                                                            column.headerName
                                                                         }
                                                                     </Text>
                                                                 </Group>
@@ -160,7 +158,7 @@ export const TopPanel = (props: NumberRendererProps) => {
                     <Badge>
                         Group by
                         {selectedGroupingColumn
-                            ? `: ${selectedGroupingColumn.label}`
+                            ? `: ${selectedGroupingColumn.headerName}`
                             : ''}
                     </Badge>
                 </Menu.Target>
@@ -168,12 +166,12 @@ export const TopPanel = (props: NumberRendererProps) => {
                     <Menu.Label>Group by</Menu.Label>
                     {columns.map(item => (
                         <Menu.Item
-                            key={item.accessor}
+                            key={item.field}
                             onClick={() => {
-                                setGrouping([item.accessor]);
+                                setGrouping([item.field]);
                             }}
                         >
-                            {item.label}
+                            {item.headerName}
                         </Menu.Item>
                     ))}
                     <Menu.Item

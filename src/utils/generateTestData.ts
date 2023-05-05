@@ -5,65 +5,68 @@ import { LongTextRenderer } from 'app/components/LongTextComponent/LongTextRende
 import { NumberRenderer } from 'app/components/NumberRenderer/NumberRenderer';
 
 export interface ColumnDef {
-    accessor: string;
-    label: string;
+    field: string;
+    headerName: string;
     flex?: number;
     cellRenderer?: unknown;
     rowGroup?: boolean;
     hide?: boolean;
     editable?: boolean;
     cellEditor?: unknown;
+    showRowGroup?: boolean;
 }
 
 export const columnData: ColumnDef[] = [
     {
-        accessor: 'firstName',
-        label: 'First Name',
+        field: 'firstName',
+        headerName: 'First Name',
+        flex: 2,
+        cellRenderer: 'agGroupCellRenderer',
+        editable: true,
+        cellEditor: 'agTextCellEditor',
+        rowGroup: true,
+        showRowGroup: true,
+    },
+    {
+        field: 'lastName',
+        headerName: 'Last Name',
         flex: 1,
         cellRenderer: BoldTextRenderer,
         editable: true,
         cellEditor: 'agTextCellEditor',
     },
     {
-        accessor: 'lastName',
-        label: 'Last Name',
-        flex: 1,
-        cellRenderer: BoldTextRenderer,
-        editable: true,
-        cellEditor: 'agTextCellEditor',
-    },
-    {
-        accessor: 'email',
-        label: 'Email',
+        field: 'email',
+        headerName: 'Email',
         flex: 2,
         cellRenderer: LongTextRenderer,
         editable: true,
         cellEditor: 'agTextCellEditor',
     },
     {
-        accessor: 'count',
-        label: 'count',
+        field: 'count',
+        headerName: 'count',
         flex: 1,
         cellRenderer: NumberRenderer,
     },
     {
-        accessor: 'jobTitle',
-        label: 'Job Title',
+        field: 'jobTitle',
+        headerName: 'Job Title',
         flex: 2,
         cellRenderer: LongTextRenderer,
         editable: true,
         cellEditor: 'agTextCellEditor',
     },
     {
-        accessor: 'startDate',
-        label: 'Start Date',
+        field: 'startDate',
+        headerName: 'Start Date',
         flex: 1,
         cellRenderer: DateRenderer,
         hide: true,
     },
     {
-        accessor: 'signatureCatchPhrase',
-        label: 'Phrases',
+        field: 'signatureCatchPhrase',
+        headerName: 'Phrases',
         flex: 3,
         cellRenderer: LongTextRenderer,
         editable: true,

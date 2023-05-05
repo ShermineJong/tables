@@ -21,7 +21,7 @@ export const useTableUtils = () => {
     const [filter, setFilter] = useState<Record<string, string>>({});
 
     const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([
-        ...columnData.map(item => item.accessor),
+        ...columnData.map(item => item.field),
     ]);
 
     const onRowClicked = (rowIndex: number) => {

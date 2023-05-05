@@ -52,12 +52,12 @@ const tableGridStyles: TableGridStylesType = (
     '&:hover': {
         background: hasBorder && theme.colors.gray[0],
     },
-    '&:last-child': {
+    '&:last-of-type': {
         borderBottom: hasBorder && `solid 1px ${theme.colors.gray[3]}`,
         borderBottomLeftRadius: theme.radius[theme.defaultRadius],
         borderBottomRightRadius: theme.radius[theme.defaultRadius],
     },
-    '&:first-child': {
+    '&:first-of-type': {
         borderTopLeftRadius: theme.radius[theme.defaultRadius],
         borderTopRightRadius: theme.radius[theme.defaultRadius],
     },
@@ -146,6 +146,7 @@ const TableHeader = (props: TableHeaderProps) => {
                                 paddingLeft: theme.spacing.sm,
                             })}
                             onClick={column.column.getToggleSortingHandler()}
+                            key={column.id}
                         >
                             <HeaderCell
                                 key={column.id}
@@ -216,7 +217,7 @@ export const ReactTableAndMantine = () => {
     const selectedGroupingColumn = useMemo(
         () =>
             grouping.length > 0
-                ? columnData.filter(item => item.accessor === grouping[0])[0]
+                ? columnData.filter(item => item.field === grouping[0])[0]
                 : undefined,
         [grouping],
     );
@@ -232,8 +233,8 @@ export const ReactTableAndMantine = () => {
                 setGrouping={setGrouping}
                 selectedGroupingColumn={selectedGroupingColumn}
                 columns={getAllLeafColumns().map(column => ({
-                    accessor: column.id,
-                    label: column.columnDef.header as string,
+                    field: column.id,
+                    headerName: column.columnDef.header as string,
                 }))}
                 columnVisibility={columnVisibility}
                 setColumnVisibility={setColumnVisibility}
@@ -381,6 +382,7 @@ export const ReactTableAndMantine = () => {
                         {getRowModel().rows.map(row => {
                             return (
                                 <TableRow
+                                    key={row.id}
                                     row={row}
                                     onRowClicked={onRowClicked}
                                     group={grouping}

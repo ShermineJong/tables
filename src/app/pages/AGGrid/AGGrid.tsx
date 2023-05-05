@@ -22,12 +22,6 @@ import { Sort } from 'utils/utils';
 import { TopPanel } from 'app/components/TopPanel/TopPanel';
 import { IconCheck, IconX } from '@tabler/icons-react';
 
-const columnDefs = columnData.map(column => ({
-    ...column,
-    field: column.accessor,
-    headerName: column.label,
-}));
-
 export const AGGrid = () => {
     const theme = useMantineTheme();
     const {
@@ -121,7 +115,7 @@ export const AGGrid = () => {
     const selectedGroupingColumn = useMemo(
         () =>
             grouping.length > 0
-                ? columnData.filter(item => item.accessor === grouping[0])[0]
+                ? columnData.filter(item => item.field === grouping[0])[0]
                 : undefined,
         [grouping],
     );
@@ -289,7 +283,7 @@ export const AGGrid = () => {
                     <AgGridReact
                         className="ag-theme-alpine"
                         getRowStyle={getRowStyle}
-                        columnDefs={columnDefs}
+                        columnDefs={columnData}
                         rowData={data}
                         onRowClicked={props =>
                             props.data &&
@@ -297,7 +291,7 @@ export const AGGrid = () => {
                             onRowClicked(props.rowIndex)
                         }
                         suppressMovableColumns={true}
-                        groupDisplayType="singleColumn"
+                        groupDisplayType="custom"
                         components={components}
                         onCellValueChanged={({ rowIndex, newValue }) => {
                             onChangeValue(rowIndex, newValue);

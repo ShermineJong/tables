@@ -21,9 +21,13 @@ export const NumberRenderer = (props: NumberRendererProps) => {
             </Badge>
         );
     }
-    return (
-        <Badge color="pink" variant="filled">
-            {value}
-        </Badge>
-    );
+
+    if (value) {
+        return (
+            <Badge color="pink" variant="filled">
+                {value}
+            </Badge>
+        );
+    }
+    return null;
 };

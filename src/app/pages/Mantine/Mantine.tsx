@@ -56,8 +56,7 @@ export const Mantine = () => {
 
     const column = useMemo(() => {
         return columnOrder.map(
-            accessor =>
-                columnData.filter(item => item.accessor === accessor)[0],
+            accessor => columnData.filter(item => item.field === accessor)[0],
         );
     }, [columnOrder]);
 
@@ -66,8 +65,8 @@ export const Mantine = () => {
             setColumnOrder([
                 grouping[0],
                 ...columnData
-                    .filter(item => item.accessor !== grouping[0])
-                    .map(item => item.accessor),
+                    .filter(item => item.field !== grouping[0])
+                    .map(item => item.field),
             ]);
         }
     }, [grouping, setColumnOrder]);
@@ -76,9 +75,9 @@ export const Mantine = () => {
         return columnOrder
             .map(
                 accessor =>
-                    columnData.filter(item => item.accessor === accessor)[0],
+                    columnData.filter(item => item.field === accessor)[0],
             )
-            .filter(item => checkColumnVisibility(item.accessor));
+            .filter(item => checkColumnVisibility(item.field));
     }, [checkColumnVisibility, columnOrder]);
 
     const renderCell = (row: Employee, accessor: string) => {
@@ -221,13 +220,14 @@ export const Mantine = () => {
                 })}
                 onClick={() => onClickSorting(column)}
                 colSpan={column.flex}
+                key={column.field}
             >
                 <HeaderCell
-                    key={column.accessor}
+                    key={column.field}
                     isSortActive={isSortActive}
                     sortDirection={sortDirection}
                 >
-                    <Text>{column.label}</Text>
+                    <Text>{column.headerName}</Text>
                 </HeaderCell>
             </Box>
         );
@@ -236,7 +236,7 @@ export const Mantine = () => {
     const selectedGroupingColumn = useMemo(
         () =>
             grouping.length > 0
-                ? columnData.filter(item => item.accessor === grouping[0])[0]
+                ? columnData.filter(item => item.field === grouping[0])[0]
                 : undefined,
         [grouping],
     );
@@ -327,12 +327,12 @@ export const Mantine = () => {
                                                         ' ' +
                                                         row.lastName +
                                                         '-' +
-                                                        column.accessor
+                                                        column.field
                                                     }
                                                 >
                                                     {renderCell(
                                                         row,
-                                                        column.accessor,
+                                                        column.field,
                                                     )}
                                                 </td>
                                             ))}
@@ -374,12 +374,12 @@ export const Mantine = () => {
                                                                     ' ' +
                                                                     row.lastName +
                                                                     '-' +
-                                                                    column.accessor
+                                                                    column.field
                                                                 }
                                                             >
                                                                 {renderCell(
                                                                     row,
-                                                                    column.accessor,
+                                                                    column.field,
                                                                 )}
                                                             </td>
                                                         ),
