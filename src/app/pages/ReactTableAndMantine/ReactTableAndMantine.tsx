@@ -366,7 +366,7 @@ export const ReactTableAndMantine = () => {
                                     </ThemeIcon>
                                 }
                             >
-                                Support Dynamic Table layout
+                                Support cell functionality
                             </List.Item>
                         </List>
                     </Stack>

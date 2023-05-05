@@ -20,7 +20,8 @@ import { HeaderCell } from 'app/components/HeaderCell/HeaderCell';
 import { useTableUtils } from '../utils';
 import { Sort } from 'utils/utils';
 import { TopPanel } from 'app/components/TopPanel/TopPanel';
-import { IconCheck, IconX } from '@tabler/icons-react';
+import { IconCheck, IconQuestionMark, IconX } from '@tabler/icons-react';
+import { Employee } from 'utils/types/Test';
 
 export const AGGrid = () => {
     const theme = useMantineTheme();
@@ -78,6 +79,35 @@ export const AGGrid = () => {
         [setSorting],
     );
 
+    const selectedGroupingColumn = useMemo(
+        () =>
+            grouping.length > 0
+                ? columnData.filter(item => item.field === grouping[0])[0]
+                : undefined,
+        [grouping],
+    );
+
+    const displayData = useMemo(() => {
+        const displayData = [];
+        data.forEach(item => {
+            if (
+                item.subRows &&
+                item.subRows.length > 0 &&
+                selectedGroupingColumn
+            ) {
+                item.subRows.forEach(subItem =>
+                    displayData.push({
+                        ...subItem,
+                        parentId: item[selectedGroupingColumn.field],
+                    }),
+                );
+            } else {
+                displayData.push(item);
+            }
+        });
+        return displayData;
+    }, [data, selectedGroupingColumn]);
+
     const components = useMemo(() => {
         return {
             agColumnHeader: (props: IHeaderParams) => {
@@ -112,14 +142,6 @@ export const AGGrid = () => {
         };
     }, [onClickSorting, sorting]);
 
-    const selectedGroupingColumn = useMemo(
-        () =>
-            grouping.length > 0
-                ? columnData.filter(item => item.field === grouping[0])[0]
-                : undefined,
-        [grouping],
-    );
-
     const onChangeValue = (rowIndex: number, newValue: string) => {
         setData(prevData => {
             const data = [...prevData];
@@ -130,6 +152,12 @@ export const AGGrid = () => {
             return data;
         });
     };
+
+    const getDataPath = useMemo(() => {
+        return (data: Employee) => {
+            return data.parentId ? [data.parentId, data.email] : [data.email];
+        };
+    }, []);
 
     return (
         <Stack p="xl" w="100%" h="100%">
@@ -147,6 +175,9 @@ export const AGGrid = () => {
                 setColumnOrder={setColumnOrder}
                 setFilter={setFilter}
             />
+            <Text size="xs" color="dimmed">
+                * First Name, Last Name, Email, Job Title and Phrase is editable
+            </Text>
             <Group
                 sx={{
                     flex: '1 1',
@@ -166,9 +197,10 @@ export const AGGrid = () => {
                     <Stack sx={{ flex: '1 1' }} w="100%">
                         <Text size="sm" p="xs">
                             Do not support certain customised table function
-                            such as column hiding, ordering and sorting. These
-                            features implemented using custom header, custom
-                            functions and state.
+                            such as column hiding, ordering, sorting and
+                            grouping out of the box. These features can
+                            implemented using state manupulation and other
+                            features provided by the table.
                         </Text>
                         <List size="sm" p="xs" spacing="sm">
                             <List.Item
@@ -200,28 +232,30 @@ export const AGGrid = () => {
                             <List.Item
                                 icon={
                                     <ThemeIcon
-                                        color="red"
+                                        color="yellow"
                                         size="sm"
                                         radius="xl"
                                     >
-                                        <IconX size="0.9rem" />
+                                        <IconQuestionMark size="0.9rem" />
                                     </ThemeIcon>
                                 }
                             >
-                                Do not support Column hiding
+                                Support Column hiding through column state
+                                manupulation
                             </List.Item>
                             <List.Item
                                 icon={
                                     <ThemeIcon
-                                        color="red"
+                                        color="yellow"
                                         size="sm"
                                         radius="xl"
                                     >
-                                        <IconX size="0.9rem" />
+                                        <IconQuestionMark size="0.9rem" />
                                     </ThemeIcon>
                                 }
                             >
-                                Do not support Column ordering
+                                Support Column ordering through column state
+                                manupulation
                             </List.Item>
                             <List.Item
                                 icon={
@@ -239,29 +273,30 @@ export const AGGrid = () => {
                             <List.Item
                                 icon={
                                     <ThemeIcon
-                                        color="red"
+                                        color="yellow"
                                         size="sm"
                                         radius="xl"
                                     >
-                                        <IconX size="0.9rem" />
+                                        <IconQuestionMark size="0.9rem" />
                                     </ThemeIcon>
                                 }
                             >
-                                Do not support custom Column sorting
+                                Support custom Column sorting through server
+                                side Data
                             </List.Item>
                             <List.Item
                                 icon={
                                     <ThemeIcon
-                                        color="red"
+                                        color="yellow"
                                         size="sm"
                                         radius="xl"
                                     >
-                                        <IconX size="0.9rem" />
+                                        <IconQuestionMark size="0.9rem" />
                                     </ThemeIcon>
                                 }
                             >
-                                Paid Data grouping functionality that does not
-                                support custom grouping
+                                Paid Data grouping functionality that support
+                                custom grouping through tree data object
                             </List.Item>
                             <List.Item
                                 icon={
@@ -274,7 +309,7 @@ export const AGGrid = () => {
                                     </ThemeIcon>
                                 }
                             >
-                                Support Dynamic Table layout
+                                Support cell editing
                             </List.Item>
                         </List>
                     </Stack>
@@ -283,19 +318,32 @@ export const AGGrid = () => {
                     <AgGridReact
                         className="ag-theme-alpine"
                         getRowStyle={getRowStyle}
-                        columnDefs={columnData}
-                        rowData={data}
+                        columnDefs={
+                            selectedGroupingColumn
+                                ? [
+                                    {
+                                        showRowGroup: true,
+                                        cellRenderer: 'agGroupCellRenderer',
+                                        flex: 2,
+                                    },
+                                    ...columnData,
+                                ]
+                                : columnData
+                        }
+                        rowData={displayData}
                         onRowClicked={props =>
                             props.data &&
                             !props.data.arrived &&
                             onRowClicked(props.rowIndex)
                         }
                         suppressMovableColumns={true}
-                        groupDisplayType="custom"
                         components={components}
                         onCellValueChanged={({ rowIndex, newValue }) => {
                             onChangeValue(rowIndex, newValue);
                         }}
+                        treeData={true}
+                        groupDisplayType="custom"
+                        getDataPath={getDataPath}
                     />
                 </Box>
                 <Box sx={{ flex: '1 1' }} />

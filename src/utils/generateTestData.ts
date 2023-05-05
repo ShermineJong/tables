@@ -20,12 +20,10 @@ export const columnData: ColumnDef[] = [
     {
         field: 'firstName',
         headerName: 'First Name',
-        flex: 2,
-        cellRenderer: 'agGroupCellRenderer',
+        flex: 1,
+        cellRenderer: BoldTextRenderer,
         editable: true,
         cellEditor: 'agTextCellEditor',
-        rowGroup: true,
-        showRowGroup: true,
     },
     {
         field: 'lastName',

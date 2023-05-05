@@ -48,12 +48,11 @@ export const Main = () => {
                         <List.Item>Customise header cell content</List.Item>
                         <List.Item>Column sorting</List.Item>
                         <List.Item>Data grouping</List.Item>
-                        <List.Item>Dynamic Table layout</List.Item>
+                        <List.Item>Editable cell</List.Item>
                     </List>
                     <Text size="sm">Not Tested</Text>
                     <List size="sm" p="xs">
                         <List.Item>Table filtering</List.Item>
-                        <List.Item>Editable cell</List.Item>
                     </List>
                 </Box>
             </Stack>

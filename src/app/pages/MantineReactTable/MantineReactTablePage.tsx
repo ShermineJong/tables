@@ -245,7 +245,7 @@ export const MantineReactTablePage = () => {
                                     </ThemeIcon>
                                 }
                             >
-                                Support Dynamic Table layout
+                                Do not support cell editing
                             </List.Item>
                         </List>
                     </Stack>
